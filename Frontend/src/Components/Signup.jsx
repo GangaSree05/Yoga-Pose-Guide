@@ -16,7 +16,7 @@ const Signup = () => {
       event.preventDefault();
       try{
         console.log("event triggered");
-        const req = await axios.post("http://localhost:3001/signup",{
+        const req = await axios.post("https://yoga-pose-guide.onrender.com/signup",{
           firstname:firstname,
           lastname:lastname,
           username:username,

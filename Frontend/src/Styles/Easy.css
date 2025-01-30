@@ -1,0 +1,77 @@
+.easy-container {
+    text-align: center;
+    padding: 20px;
+    background: #f8fafc;
+    color: #333;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #1e293b;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .pose-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .pose-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 40%;
+    text-align: left;
+  }
+  
+  .pose-image {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .pose-card h2 {
+    font-size: 1.5rem;
+    color: #1e293b;
+  }
+  
+  .pose-card p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .complete-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background: #1e293b;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .complete-button.completed {
+    background: #10b981;
+  }
+  
+  .complete-button:hover {
+    background: #1e293b;
+  }
+  
+  .complete-button.completed:hover {
+    background: #059669;
+  }
+  

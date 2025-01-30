@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/easy.css";
+import "../styles/Easy.css";
 
 const poses = [
   {

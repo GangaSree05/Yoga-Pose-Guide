@@ -4,7 +4,7 @@ import "../Styles/Progress.css";
 
 const Progress = () => {
   const [completedPoses, setCompletedPoses] = useState([]);
-  const email = localStorage.getItem("userEmail"); // Replace with actual logged-in user's email
+  const email = localStorage.getItem("userEmail"); 
 
   useEffect(() => {
     axios

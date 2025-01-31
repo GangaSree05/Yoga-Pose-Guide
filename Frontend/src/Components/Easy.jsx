@@ -14,9 +14,8 @@ const poses = [
 const Easy = () => {
   const [completedPoses, setCompletedPoses] = useState([]);
   const userEmail = localStorage.getItem("userEmail");
-  console.log(userEmail) // Get stored email
+  console.log(userEmail) 
 
-  // 🔹 Fetch completed poses from the database on page load
   useEffect(() => {
     const fetchProgress = async () => {
       if (!userEmail) {
@@ -35,12 +34,10 @@ const Easy = () => {
     fetchProgress();
   }, [userEmail]);
 
-  // 🔹 Mark a pose as completed
   const handleComplete = (id) => {
     setCompletedPoses((prev) => (prev.includes(id) ? prev.filter((poseId) => poseId !== id) : [...prev, id]));
   };
 
-  // 🔹 Save progress to the database
   const handleSaveProgress = async () => {
     if (!userEmail) {
       console.error("⚠️ User email not found.");

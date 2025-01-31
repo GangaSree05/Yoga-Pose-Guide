@@ -5,15 +5,15 @@ import "../Styles/Easy.css";
 const poses = [
   { id: 8, name: "Adho Mukha Shvanasan", description: "Ardha Chandrasana or Half Moon Pose is a standing asana in modern yoga as exercise. The name comes from the Sanskrit words अर्ध ardha meaning “half”, चन्द्र candra meaning “moon”, and आसन asana meaning “posture” or “seat”.", image: "/images/pose1.jpg" },
   { id: 9, name: "Dandasana", description: "Half Moon Pose is a standing asana in modern yoga as exercise.", image: "/images/pose2.jpg" },
-  // ... other poses
+  
 ];
 
 const Easy = () => {
   const [completedPoses, setCompletedPoses] = useState([]);
   const userEmail = localStorage.getItem("userEmail");
-  console.log(userEmail) // Get stored email
+  console.log(userEmail)
 
-  // 🔹 Fetch completed poses from the database on page load
+  
   useEffect(() => {
     const fetchProgress = async () => {
       if (!userEmail) {
@@ -32,12 +32,12 @@ const Easy = () => {
     fetchProgress();
   }, [userEmail]);
 
-  // 🔹 Mark a pose as completed
+
   const handleComplete = (id) => {
     setCompletedPoses((prev) => (prev.includes(id) ? prev.filter((poseId) => poseId !== id) : [...prev, id]));
   };
 
-  // 🔹 Save progress to the database
+  
   const handleSaveProgress = async () => {
     if (!userEmail) {
       console.error("⚠️ User email not found.");

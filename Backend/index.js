@@ -91,7 +91,6 @@ app.post('/save-progress', async (req, res) => {
       return res.status(404).json({ response: "User not found" });
     }
 
-    // Merge completed poses while avoiding duplicates
     user.completedPoses = [...new Set([...user.completedPoses, ...completedPoses])];
 
     await user.save();

@@ -11,7 +11,7 @@ const Login=(p)=>{
         e.preventDefault()
         try{
             console.log("event triggered");
-            const req = await axios.post("http://localhost:3001/login",{
+            const req = await axios.post("https://yoga-pose-guide.onrender.com/login",{
               
               email:email,
               password:password

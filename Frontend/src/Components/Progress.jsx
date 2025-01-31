@@ -8,7 +8,7 @@ const Progress = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/save-progress?email=${email}`)
+      .get(`https://yoga-pose-guide.onrender.com/save-progress?email=${email}`)
       .then((response) => {
         setCompletedPoses(response.data.completedPoses || []);
       })

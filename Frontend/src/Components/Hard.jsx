@@ -17,15 +17,15 @@ const Easy = () => {
   useEffect(() => {
     const fetchProgress = async () => {
       if (!userEmail) {
-        console.error("⚠️ No user email found. Please log in.");
+        console.error(" No user email found. Please log in.");
         return;
       }
 
       try {
-        const response = await axios.get(`http://localhost:3001/save-progress?email=${userEmail}`);
+        const response = await axios.get(`https://yoga-pose-guide.onrender.com/save-progress?email=${userEmail}`);
         setCompletedPoses(response.data.completedPoses || []);
       } catch (error) {
-        console.error("❌ Error fetching progress:", error.response?.data || error.message);
+        console.error(" Error fetching progress:", error.response?.data || error.message);
       }
     };
 
@@ -40,20 +40,20 @@ const Easy = () => {
   
   const handleSaveProgress = async () => {
     if (!userEmail) {
-      console.error("⚠️ User email not found.");
+      console.error(" User email not found.");
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:3001/save-progress", {
+      const response = await axios.post("https://yoga-pose-guide.onrender.com/save-progress", {
         email: userEmail,
         completedPoses: completedPoses,
       });
 
-      console.log("✅ Progress saved:", response.data);
+      console.log(" Progress saved:", response.data);
       alert("Progress saved successfully!");
     } catch (error) {
-      console.error("❌ Error saving progress:", error.response?.data || error.message);
+      console.error(" Error saving progress:", error.response?.data || error.message);
     }
   };
 

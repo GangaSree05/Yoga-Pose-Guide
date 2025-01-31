@@ -7,7 +7,7 @@ import Landing from "./Components/Landing";
 import Easy from "./Components/Easy";
 import Medium from "./Components/Medium";
 import Hard from "./Components/Hard";
-
+import Progress from "./Components/Progress";
 
 const App = () => {
   return (
@@ -21,6 +21,8 @@ const App = () => {
           <Route path="/easy" element={<Easy/>}></Route>
          <Route path="/medium" element={<Medium/>}></Route>
           <Route path="/hard" element={<Hard/>}></Route>
+          <Route path="/save-progress" element={<Progress/>}></Route>
+          
         </Routes>
       </Router>
    

@@ -4,7 +4,8 @@ const signupSchema = mdb.Schema({
     lastName: String,
     userName: String,
     email: String,
-    password: String
+    password: String,
+    completedPoses: { type: Array, default: [] },       
 })
 
 const signup_schema = mdb.model("signup", signupSchema);

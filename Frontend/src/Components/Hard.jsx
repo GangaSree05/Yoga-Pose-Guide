@@ -1,48 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "../Styles/Easy.css";
 
 const poses = [
-  {
-    id: 1,
-    name: "Balasana",
-    description: "Balasana, Child’s Pose, or Child’s Resting Pose is a kneeling asana in modern yoga as exercise. Balasana is a counter asana for various asanas and is usually practiced before and after Sirsasana.",
-    image: "/images/pose11.jpg",
-  },
-  {
-    id: 2,
-    name: "Bhekasana",
-    description: "Bhekasana or Frog posture is a reclining asana in modern yoga as exercise. It is one of several poses that put the body in a shape like that of a frog: another is Mandukasana. The name comes from the Sanskrit words Bheka (भेका, bheka) meaning “frog”, and asana (आसन) meaning “posture” since the asana resembles a frog.",
-    image: "/images/pose12.jpg",
-  },
-  {
-    id: 3,
-    name: "Bhujangasana",
-    description: "Bhujangasana or Cobra Pose is a reclining back-bending asana in hatha yoga and modern yoga as exercise. It is commonly performed in a cycle of asanas in Surya Namaskar (Salute to the Sun) as an alternative to Urdhva Mukha Svanasana (Upwards Dog Pose).",
-    image: "/images/pose13.jpg",
-  },
-  {
-    id: 4,
-    name: "Bhairavasana",
-    description: "Bhairavasana or formidable pose, sometimes called Supta Bhairavasana is a reclining asana in hatha yoga; the variation Kala Bhairavasana has the body balanced on the straight leg and one arm, as in Vasiṣṭhasana. Bhairava is one of the eight aspects of the god Shiva. The pose has also been called Aṇkusasana, the elephant goad pose.",
-    image: "/images/pose14.jpg",
-  },
-  {
-    id: 5,
-    name: "Bharadvajasana",
-    description: "Bharadvajasana or Bharadvaja’s twist is a twisting asana in modern yoga as exercise. The asana is dedicated to the sage Bharadvāja who was one of the Seven Great Sages or Rishi. He was the father of Drona, a master of military arts and the royal guru to Kauravas, Pandavas and the Devastras, the princes who fought the great war of the Mahabharata.",
-    image: "/images/pose15.jpg",
-  },
-  
-    
+  { id: 8, name: "Adho Mukha Shvanasan", description: "Ardha Chandrasana or Half Moon Pose is a standing asana in modern yoga as exercise. The name comes from the Sanskrit words अर्ध ardha meaning “half”, चन्द्र candra meaning “moon”, and आसन asana meaning “posture” or “seat”.", image: "/images/pose1.jpg" },
+  { id: 9, name: "Dandasana", description: "Half Moon Pose is a standing asana in modern yoga as exercise.", image: "/images/pose2.jpg" },
+  // ... other poses
 ];
 
-const Hard = () => {
+const Easy = () => {
   const [completedPoses, setCompletedPoses] = useState([]);
+  const userEmail = localStorage.getItem("userEmail");
+  console.log(userEmail) // Get stored email
 
+  // 🔹 Fetch completed poses from the database on page load
+  useEffect(() => {
+    const fetchProgress = async () => {
+      if (!userEmail) {
+        console.error("⚠️ No user email found. Please log in.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:3001/save-progress?email=${userEmail}`);
+        setCompletedPoses(response.data.completedPoses || []);
+      } catch (error) {
+        console.error("❌ Error fetching progress:", error.response?.data || error.message);
+      }
+    };
+
+    fetchProgress();
+  }, [userEmail]);
+
+  // 🔹 Mark a pose as completed
   const handleComplete = (id) => {
-    setCompletedPoses((prev) =>
-      prev.includes(id) ? prev.filter((poseId) => poseId !== id) : [...prev, id]
-    );
+    setCompletedPoses((prev) => (prev.includes(id) ? prev.filter((poseId) => poseId !== id) : [...prev, id]));
+  };
+
+  // 🔹 Save progress to the database
+  const handleSaveProgress = async () => {
+    if (!userEmail) {
+      console.error("⚠️ User email not found.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3001/save-progress", {
+        email: userEmail,
+        completedPoses: completedPoses,
+      });
+
+      console.log("✅ Progress saved:", response.data);
+      alert("Progress saved successfully!");
+    } catch (error) {
+      console.error("❌ Error saving progress:", error.response?.data || error.message);
+    }
   };
 
   return (
@@ -56,9 +68,7 @@ const Hard = () => {
             <h2>{pose.name}</h2>
             <p>{pose.description}</p>
             <button
-              className={`complete-button ${
-                completedPoses.includes(pose.id) ? "completed" : ""
-              }`}
+              className={`complete-button ${completedPoses.includes(pose.id) ? "completed" : ""}`}
               onClick={() => handleComplete(pose.id)}
             >
               {completedPoses.includes(pose.id) ? "Completed" : "Complete"}
@@ -66,8 +76,9 @@ const Hard = () => {
           </div>
         ))}
       </div>
+      <button onClick={handleSaveProgress}>Save Progress</button>
     </div>
   );
 };
 
-export default Hard;
+export default Easy;

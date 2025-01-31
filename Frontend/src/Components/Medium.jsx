@@ -1,48 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "../Styles/Easy.css";
 
 const poses = [
-  {
-    id: 1,
-    name: "Ashtanga Namaskara",
-    description: "Ashtanga Namaskara also called Ashtanga Dandavat Pranam, Eight Limbed pose, Caterpillar pose, or Chest, Knees and Chin pose is a posture sometimes used in the Surya Namaskar sequence in modern yoga as exercise, where the body is balanced on eight points of contact with the floor: feet, knees, chest, chin and hands..",
-    image: "/images/pose6.jpg",
-  },
-  {
-    id: 2,
-    name: "Bakasana",
-    description: "Bakasana (Crane pose), and the similar Kakasana (Crow pose) are balancing asanas in hatha yoga and modern yoga as exercise. In all variations, these are arm balancing poses in which hands are planted on the floor, shins rest upon upper arms, and feet lift up. The poses are often confused, but traditionally Kakasana has arms bent, Bakasana (the crane being the taller bird with longer legs) has the arms straight.",
-    image: "/images/pose7.jpg",
-  },
-  {
-    id: 3,
-    name: "Astavakrasanaa",
-    description: "Akarna Dhanurasana also called the Archer pose, Bow and Arrow pose, or Shooting Bow pose is an asana in hatha yoga and modern yoga as exercise. The posture resembles an archer about to release an arrow.",
-    image: "/images/pose8.jpg",
-  },
-  {
-    id: 4,
-    name: "Astavakrasana",
-    description: "Astavakrasana or Eight-Angle Pose is a hand-balancing asana in modern yoga as exercise dedicated to the sage Astavakra, the spiritual guru of King Janaka.",
-    image: "/images/pose9.jpg",
-  },
-  {
-    id: 5,
-    name: "Baddha Konasana",
-    description: "Baddha Konasana, Bound Angle Pose, Throne Pose, Butterfly Pose, or Cobbler’s Pose (after the typical sitting position of Indian cobblers when they work), and historically called Bhadrasana, is a seated asana in hatha yoga and modern yoga as exercise. It is suitable as a meditation seat.",
-    image: "/images/pose10.jpg",
-  },
+  { id: 6, name: "Adho Mukha Shvanasan", description: "Ardha Chandrasana or Half Moon Pose is a standing asana in modern yoga as exercise. The name comes from the Sanskrit words अर्ध ardha meaning “half”, चन्द्र candra meaning “moon”, and आसन asana meaning “posture” or “seat”.", image: "/images/pose1.jpg" },
+  { id: 7, name: "Dandasana", description: "Ashtanga Namaskara also called Ashtanga Dandavat Pranam, Eight Limbed pose, Caterpillar pose, or Chest, Knees and Chin pose is a posture sometimes used in the Surya Namaskar sequence in modern yoga as exercise, where the body is balanced on eight points of contact with the floor: feet, knees, chest, chin and hands.", image: "/images/pose2.jpg" },
   
-    
 ];
 
-const Medium = () => {
+const Easy = () => {
   const [completedPoses, setCompletedPoses] = useState([]);
+  const userEmail = localStorage.getItem("userEmail");
+  console.log(userEmail) // Get stored email
 
+  // 🔹 Fetch completed poses from the database on page load
+  useEffect(() => {
+    const fetchProgress = async () => {
+      if (!userEmail) {
+        console.error("⚠️ No user email found. Please log in.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:3001/save-progress?email=${userEmail}`);
+        setCompletedPoses(response.data.completedPoses || []);
+      } catch (error) {
+        console.error("❌ Error fetching progress:", error.response?.data || error.message);
+      }
+    };
+
+    fetchProgress();
+  }, [userEmail]);
+
+  // 🔹 Mark a pose as completed
   const handleComplete = (id) => {
-    setCompletedPoses((prev) =>
-      prev.includes(id) ? prev.filter((poseId) => poseId !== id) : [...prev, id]
-    );
+    setCompletedPoses((prev) => (prev.includes(id) ? prev.filter((poseId) => poseId !== id) : [...prev, id]));
+  };
+
+  // 🔹 Save progress to the database
+  const handleSaveProgress = async () => {
+    if (!userEmail) {
+      console.error("⚠️ User email not found.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3001/save-progress", {
+        email: userEmail,
+        completedPoses: completedPoses,
+      });
+
+      console.log("✅ Progress saved:", response.data);
+      alert("Progress saved successfully!");
+    } catch (error) {
+      console.error("❌ Error saving progress:", error.response?.data || error.message);
+    }
   };
 
   return (
@@ -56,9 +68,7 @@ const Medium = () => {
             <h2>{pose.name}</h2>
             <p>{pose.description}</p>
             <button
-              className={`complete-button ${
-                completedPoses.includes(pose.id) ? "completed" : ""
-              }`}
+              className={`complete-button ${completedPoses.includes(pose.id) ? "completed" : ""}`}
               onClick={() => handleComplete(pose.id)}
             >
               {completedPoses.includes(pose.id) ? "Completed" : "Complete"}
@@ -66,8 +76,9 @@ const Medium = () => {
           </div>
         ))}
       </div>
+      <button onClick={handleSaveProgress}>Save Progress</button>
     </div>
   );
 };
 
-export default Medium;
+export default Easy;

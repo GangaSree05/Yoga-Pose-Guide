@@ -7,7 +7,7 @@ const Landing = () => {
       <nav className="navbar">
         <h2 className="logo">FlexiGuide</h2>
         <div className="nav-links">
-          <Link to="/progress" className="nav-button">View Progress</Link>
+          <Link to="/save-progress" className="nav-button">View Progress</Link>
           <Link to="/landing" className="nav-button">Start Learning</Link>
           <Link to="/" className="nav-button logout">Logout</Link>
         </div>

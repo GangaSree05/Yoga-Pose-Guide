@@ -78,8 +78,53 @@ app.post('/login', async (req, res) => {
     res.status(500).send("Error during login");
   }
 });
+app.post('/save-progress', async (req, res) => {
+  const { email, completedPoses } = req.body;
 
-  
+  try {
+    console.log("Saving progress for email:", email);
+    console.log("Completed poses:", completedPoses);
+
+    const user = await Signup.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ response: "User not found" });
+    }
+
+    // Merge completed poses while avoiding duplicates
+    user.completedPoses = [...new Set([...user.completedPoses, ...completedPoses])];
+
+    await user.save();
+
+    console.log("Progress saved successfully");
+    res.status(200).json({ response: "Progress saved", progressStatus: true });
+  } catch (err) {
+    console.error("Error saving progress:", err);
+    res.status(500).json({ response: "Error saving progress", progressStatus: false });
+  }
+});
+
+
+app.get('/save-progress', async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    console.log("Fetching progress for email:", email);
+
+    const user = await Signup.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ response: "User not found" });
+    }
+
+    res.status(200).json({ completedPoses: user.completedPoses || [] });
+  } catch (err) {
+    console.error("Error fetching progress:", err);
+    res.status(500).json({ response: "Error fetching progress" });
+  }
+});
+
+
 app.listen(3001, () => {
   console.log("Server connected on port 3001");
 });
